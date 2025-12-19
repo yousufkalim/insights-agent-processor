@@ -54,7 +54,9 @@ async function getUnprocessedDocuments(db) {
   const processedIds = new Set(processedDocs.map((doc) => doc._id.toString()));
 
   // Get all source documents
-  const allDocuments = await sourceCollection.find({}).toArray();
+  const allDocuments = await sourceCollection
+    .find({ createdAt: { $gt: new Date('2025-11-19') } })
+    .toArray();
 
   // Filter out already processed
   const unprocessed = allDocuments.filter((doc) => !processedIds.has(doc._id.toString()));
