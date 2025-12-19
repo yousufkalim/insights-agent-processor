@@ -5,6 +5,7 @@ import axios from 'axios';
 const MONGODB_URI = process.env.MONGODB_URI;
 const MONGODB_DATABASE = process.env.MONGODB_DATABASE;
 const LANGGRAPH_API_URL = process.env.LANGGRAPH_INSIGHTS_API_URL;
+const LANGSMITH_API_KEY = process.env.LANGSMITH_API_KEY;
 const ASSISTANT_ID = process.env.LANGGRAPH_INSIGHTS_AGENT_ASSISTANT_ID || 'insights-agent';
 const BATCH_SIZE = parseInt(process.env.BATCH_SIZE || '5', 10);
 const DELAY_MS = parseInt(process.env.DELAY_BETWEEN_REQUESTS_MS || '1000', 10);
@@ -12,6 +13,11 @@ const BATCH_DELAY_MS = parseInt(process.env.DELAY_BETWEEN_BATCHES_MS || '120000'
 
 const SOURCE_COLLECTION = 'meetingdata';
 const TRACKING_COLLECTION = 'processed_meetingdata';
+
+if (LANGSMITH_API_KEY) {
+  // Set x-api-key header
+  axios.defaults.headers.common['x-api-key'] = LANGSMITH_API_KEY;
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
